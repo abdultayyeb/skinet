@@ -1,8 +1,14 @@
 
+using API.Helper;
 using Core.Interface;
 using Infrastructure.Data;
 using Infrastructure.Data.Repositories;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
 namespace API
@@ -22,8 +28,9 @@ namespace API
         {
 
             services.AddScoped<IProductRepository,ProductRepository>();
-            
+            services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
             services.AddControllers();
+            services.AddAutoMapper(typeof(MapperProfile));
             services.AddDbContext<StoreContext>(x=> x.UseSqlite(_configuration.GetConnectionString("DefaultConnection")));
             services.AddSwaggerGen(c =>
             {
@@ -45,6 +52,8 @@ namespace API
 
             app.UseRouting();
 
+            app.UseStaticFiles();
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
