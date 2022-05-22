@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Core.Constants;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,17 @@ namespace Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            if (Database.ProviderName == DatabaseConst.DatabaseSqlLite)
+            {
+                foreach (var entitytype in modelBuilder.Model.GetEntityTypes())
+                {
+                    var properties = entitytype.ClrType.GetProperties().Where(x => x.PropertyType == typeof(decimal));
+                    foreach (var prop in properties)
+                    {
+                        modelBuilder.Entity(entitytype.Name).Property(prop.Name).HasConversion<double>();
+                    }
+                }
+            }
         }
     }
 }
