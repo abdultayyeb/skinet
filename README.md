@@ -10,7 +10,7 @@ In this project we are using `[Angular]` as client side for developing **SPA** (
 
 We are working on different package to enhance client side such as **ngx-bootstrap**, **Font Awesome** etc.
 
-## Back end 
+## Backend Technology
 
 As previously discussed for back end we are using `[NET Core]` and `[Entity Framework Core]` as **ORM**  (Object Relational Mapper) which is communicating with SQL Lite database for quickly development process later we will update this database to `[SQL]` in the future.
 
